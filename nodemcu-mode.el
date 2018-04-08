@@ -28,7 +28,7 @@
   "NodeMCU support."
   :group 'tools)
 
-(defcustom nodemcu-backend "nodemcu-tool"
+(defcustom nodemcu-backend "nodemcu-uploader"
   "Which backend to use."
   :package-version '(nodemcu . "0.0.1")
   :group 'nodemcu
