@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2018  Andreas Müller
 
-;; Author: Andreas Müller <am@0x7.ch>
+;; Author: Andreas Müller <code@0x7.ch>
 ;; Keywords: tools
 ;; Version: 0.1.0
 ;; URL: https://github.com/andrmuel/nodemcu-mode
