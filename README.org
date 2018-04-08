@@ -1,0 +1,61 @@
+#+TITLE: nodemcu-mode -- Emacs support for NodeMCU
+
+* Overview
+
+nodemcu-mode is a minor mode that provides a wrapper for the popular
+nodemcu interaction tools ~nodemcu-tool~ and ~nodemcu-uploader~.
+
+* Installation
+
+** Dependencies
+
+First, install either ~nodemcu-uploader~ with
+
+#+BEGIN_SRC sh :results verbatim
+pip install --user nodemcu-uploader
+#+END_SRC
+
+or ~nodemcu-tool~ with
+
+#+BEGIN_SRC sh :results verbatim
+npm -g install nodemcu-tool
+#+END_SRC
+
+(if you are viewing this file within Emacs, just hit C-c C-c on the
+preferred block above)
+
+By default, ~nodemcu-uploader~ is used, because it seems to be a bit
+faster. If you prefer ~nodemcu-tool~, please configure the backend with
+
+#+BEGIN_SRC emacs-lisp
+(setq nodemcu-backend "nodemcu-tool")
+#+END_SRC
+
+
+** Package
+
+To use this mode, add the repository to your load path, load it and
+enable the minor mode:
+
+#+BEGIN_SRC emacs-lisp
+(setq nodemcu-default-keybindings t)      ; optional, enable default key bindings
+(setq nodemcu-port "/dev/nodemcu-device") ; usually /dev/ttyUSBx; use udev rule to get a static name
+(add-to-list 'load-path "~/path/to/nodemcu-mode/")
+(require 'nodemcu-mode)
+(add-hook 'lua-mode-hook #'nodemcu-mode)  ; optional, automatically enable for nodemcu-mode for lua projects
+#+END_SRC
+
+* Configuration
+
+For configuration options, please look at the customization group
+~nodemcu~. In particular, ~nodemcu-default-keybindings~ can be used to
+enable key bindings, and ~nodemcu-port~ will be required if your USB
+port is not ~/dev/ttyUSB0~.
+
+* Further Information
+
+- [[https://www.esp8266.com/][ESP2866]]
+- [[https://nodemcu.readthedocs.io/en/master/][NodeMCU Documentation]]
+- [[https://github.com/nodemcu/nodemcu-firmware][NodeMCU Firmware]]
+- [[https://github.com/kmpm/nodemcu-uploader][nodemcu-uploader]]
+- [[https://github.com/andidittrich/NodeMCU-Tool][NodeMCU-Tool]]
