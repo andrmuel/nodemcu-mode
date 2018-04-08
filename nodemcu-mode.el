@@ -4,6 +4,9 @@
 
 ;; Author: Andreas Müller <am@0x7.ch>
 ;; Keywords: tools
+;; Version: 0.1.0
+;; URL: https://github.com/andrmuel/nodemcu-mode
+;; Package-Requires: ((emacs "25"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -20,7 +23,9 @@
 
 ;;; Commentary:
 
-;;
+;; nodemcu-mode provides a wrapper around nodemcu-tool and
+;; nodemcu-wrapper, so that NodeMCU devices can be programmed and used
+;; from within Emacs.
 
 ;;; Code:
 
@@ -30,7 +35,7 @@
 
 (defcustom nodemcu-backend "nodemcu-uploader"
   "Which backend to use."
-  :package-version '(nodemcu . "0.0.1")
+  :package-version '(nodemcu . "0.1.0")
   :group 'nodemcu
   :safe (lambda (val) (memq val '("nodemcu-tool" "nodemcu-uploader")))
   :type '(choice (const "nodemcu-tool"     :tag "Use nodemcu-tool (nodejs based).")
@@ -38,13 +43,13 @@
 
 (defcustom nodemcu-port nil
   "Port for interaction with NodeMCU device."
-  :package-version '(nodemcu . "0.0.1")
+  :package-version '(nodemcu . "0.1.0")
   :group 'nodemcu
   :type 'string)
 
 (defcustom nodemcu-baudrate nil
   "Baud rate for interaction with NodeMCU device."
-  :package-version '(nodemcu . "0.0.1")
+  :package-version '(nodemcu . "0.1.0")
   :group 'nodemcu
   :type 'integer)
 
@@ -52,7 +57,7 @@
   "Whether to create default key bindings.
 
 \\<nodemcu-mode-map>"
-  :package-version '(nodemcu . "0.0.1")
+  :package-version '(nodemcu . "0.1.0")
   :group 'nodemcu
   :type 'boolean)
 
