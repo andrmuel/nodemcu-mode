@@ -21,7 +21,7 @@ or ~nodemcu-tool~ with
 npm -g install nodemcu-tool
 #+END_SRC
 
-(if you are viewing this file within Emacs, just hit C-c C-c on the
+(if you are viewing this file within Emacs, just hit ~C-c C-c~ on the
 preferred block above)
 
 By default, ~nodemcu-uploader~ is used, because it seems to be a bit
