@@ -35,7 +35,6 @@
 
 (defcustom nodemcu-backend "nodemcu-uploader"
   "Which backend to use."
-  :package-version '(nodemcu . "0.1.0")
   :group 'nodemcu
   :safe (lambda (val) (memq val '("nodemcu-tool" "nodemcu-uploader")))
   :type '(choice (const "nodemcu-tool"     :tag "Use nodemcu-tool (nodejs based).")
@@ -43,21 +42,18 @@
 
 (defcustom nodemcu-port nil
   "Port for interaction with NodeMCU device."
-  :package-version '(nodemcu . "0.1.0")
   :group 'nodemcu
-  :type 'string)
+  :type '(choice string (const nil)))
 
 (defcustom nodemcu-baudrate nil
   "Baud rate for interaction with NodeMCU device."
-  :package-version '(nodemcu . "0.1.0")
   :group 'nodemcu
-  :type 'integer)
+  :type '(choice integer (const nil)))
 
 (defcustom nodemcu-default-keybindings nil
   "Whether to create default key bindings.
 
 \\<nodemcu-mode-map>"
-  :package-version '(nodemcu . "0.1.0")
   :group 'nodemcu
   :type 'boolean)
 
@@ -65,7 +61,7 @@
 (define-minor-mode nodemcu-mode
   "Toggle NodeMCU mode.
 
-This mode allows provides interaction with NodeMCU devices."
+This mode provides interaction with NodeMCU devices."
   ;; The initial value.
   :init-value nil
   ;; The indicator for the mode line.
@@ -73,15 +69,15 @@ This mode allows provides interaction with NodeMCU devices."
   ;; The minor mode bindings.
   :keymap (when nodemcu-default-keybindings
             (let ((map (make-sparse-keymap)))
-              (define-key map (kbd "C-c C-n C-u") 'nodemcu-upload-current-file)
-              (define-key map (kbd "C-c C-n C-e") 'nodemcu-run-current-file)
-              (define-key map (kbd "C-c C-n C-x") 'nodemcu-remove-current-file)
-              (define-key map (kbd "C-c C-n C-d") 'nodemcu-list-devices)
-              (define-key map (kbd "C-c C-n C-l") 'nodemcu-list-files)
-              (define-key map (kbd "C-c C-n C-f") 'nodemcu-format-device)
-              (define-key map (kbd "C-c C-n C-r") 'nodemcu-reset-device)
-              (define-key map (kbd "C-c C-n C-s") 'nodemcu-restart-device)
-              (define-key map (kbd "C-c C-n C-t") 'nodemcu-terminal)
+              (define-key map (kbd "C-c C-n C-u") #'nodemcu-upload-current-file)
+              (define-key map (kbd "C-c C-n C-e") #'nodemcu-run-current-file)
+              (define-key map (kbd "C-c C-n C-x") #'nodemcu-remove-current-file)
+              (define-key map (kbd "C-c C-n C-d") #'nodemcu-list-devices)
+              (define-key map (kbd "C-c C-n C-l") #'nodemcu-list-files)
+              (define-key map (kbd "C-c C-n C-f") #'nodemcu-format-device)
+              (define-key map (kbd "C-c C-n C-r") #'nodemcu-reset-device)
+              (define-key map (kbd "C-c C-n C-s") #'nodemcu-restart-device)
+              (define-key map (kbd "C-c C-n C-t") #'nodemcu-terminal)
               map))
   :group 'nodemcu)
 
