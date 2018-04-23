@@ -111,7 +111,7 @@ Builds shell command for given COMMAND and ARGS."
 (defmacro nodemcu--backend-run (&rest cases)
   "Wrapper to run nodemcu command for current backend based on CASES."
   `(nodemcu--run-command
-    (nodemcu--backend-switch ,cases)))
+    (nodemcu--backend-switch ,@cases)))
 
 (defun nodemcu-upload-current-file ()
   "Upload the current file to the NodeMCU device."
