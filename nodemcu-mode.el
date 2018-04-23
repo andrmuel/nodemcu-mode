@@ -101,7 +101,7 @@ Builds shell command for given COMMAND and ARGS."
       (message "command not supported")))
 
 (defmacro nodemcu--backend-switch (&rest cases)
-  "Wrapper for pcase to determine command for current nodemcu-backend."
+  "Wrapper for pcase to determine command for current nodemcu-backend based on CASES."
   `(pcase nodemcu-backend
      ,@(mapcar
         (lambda (c)
@@ -109,7 +109,7 @@ Builds shell command for given COMMAND and ARGS."
         cases)))
 
 (defmacro nodemcu--backend-run (&rest cases)
-  "Wrapper to run nodemcu command for current backend."
+  "Wrapper to run nodemcu command for current backend based on CASES."
   `(nodemcu--run-command
     (nodemcu--backend-switch ,cases)))
 
@@ -139,8 +139,8 @@ Builds shell command for given COMMAND and ARGS."
 (defun nodemcu-list-devices ()
   "List available NodeMCU devices."
   (interactive)
-   (nodemcu--backend-run
-    (tool "devices")))
+  (nodemcu--backend-run
+   (tool "devices")))
 
 (defun nodemcu-list-files ()
   "List files on device."
