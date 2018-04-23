@@ -96,7 +96,9 @@ Builds shell command for given COMMAND and ARGS."
 
 (defun nodemcu--run-command (command &optional args)
   "Run the given nodecmu COMMAND with ARGS."
-  (compile (nodemcu--get-command command args)))
+  (if command
+      (compile (nodemcu--get-command command args))
+      (message "command not supported")))
 
 (defmacro nodemcu--backend-switch (&rest cases)
   `(pcase nodemcu-backend
@@ -131,9 +133,9 @@ Builds shell command for given COMMAND and ARGS."
 (defun nodemcu-list-devices ()
   "List available NodeMCU devices."
   (interactive)
-  (pcase nodemcu-backend
-    ("nodemcu-tool"     (nodemcu--run-command "devices"))
-    ("nodemcu-uploader" (message "command not supported"))))
+  (nodemcu--run-command
+   (nodemcu--backend-switch
+    (tool "devices"))))
 
 (defun nodemcu-list-files ()
   "List files on device."
@@ -156,16 +158,16 @@ This will delete all files, but not the NodeMCU firmware itself."
 (defun nodemcu-reset-device ()
   "Reset the NodeMCU device using DTR/RTS."
   (interactive)
-  (pcase nodemcu-backend
-    ("nodemcu-tool"     (nodemcu--run-command "reset"))
-    ("nodemcu-uploader" (message "command not supported"))))
+  (nodemcu--run-command
+   (nodemcu--backend-switch
+    (tool "reset"))))
 
 (defun nodemcu-restart-device ()
   "Restart the NodeMCU device using 'node.restart()' command."
   (interactive)
-  (pcase nodemcu-backend
-    ("nodemcu-tool"     (message "command not supported"))
-    ("nodemcu-uploader" (nodemcu--run-command "node restart"))))
+  (nodemcu--run-command
+   (nodemcu--backend-switch
+    (uploader "node restart"))))
 
 (defun nodemcu-terminal ()
   "Start a serial terminal."
