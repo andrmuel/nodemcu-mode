@@ -98,6 +98,13 @@ Builds shell command for given COMMAND and ARGS."
   "Run the given nodecmu COMMAND with ARGS."
   (compile (nodemcu--get-command command args)))
 
+(defmacro nodemcu--backend-switch (&rest cases)
+  `(pcase nodemcu-backend
+     ,@(mapcar
+        (lambda (c)
+          (list (concat "nodemcu-" (symbol-name (car c))) (cadr c)))
+        cases)))
+
 (defun nodemcu-upload-current-file ()
   "Upload the current file to the NodeMCU device."
   (interactive)
@@ -106,18 +113,20 @@ Builds shell command for given COMMAND and ARGS."
 (defun nodemcu-run-current-file ()
   "Run the current file (must be available on device)."
   (interactive)
-  (nodemcu--run-command (pcase nodemcu-backend
-                          ("nodemcu-tool"     "run")
-                          ("nodemcu-uploader" "exec"))
-                        (file-name-nondirectory (buffer-file-name))))
+  (nodemcu--run-command
+   (nodemcu--backend-switch
+    (tool     "run")
+    (uploader "exec"))
+   (file-name-nondirectory (buffer-file-name))))
 
 (defun nodemcu-remove-current-file ()
   "Delete file with file name of current buffer on device."
   (interactive)
-  (nodemcu--run-command (pcase nodemcu-backend
-                          ("nodemcu-tool"     "remove")
-                          ("nodemcu-uploader" "file remove"))
-                        (file-name-nondirectory (buffer-file-name))))
+  (nodemcu--run-command
+   (nodemcu--backend-switch
+    (tool     "remove")
+    (uploader "file remove"))
+   (file-name-nondirectory (buffer-file-name))))
 
 (defun nodemcu-list-devices ()
   "List available NodeMCU devices."
@@ -129,18 +138,20 @@ Builds shell command for given COMMAND and ARGS."
 (defun nodemcu-list-files ()
   "List files on device."
   (interactive)
-  (nodemcu--run-command (pcase nodemcu-backend
-                          ("nodemcu-tool"     "fsinfo")
-                          ("nodemcu-uploader" "file list"))))
+  (nodemcu--run-command
+   (nodemcu--backend-switch
+    (tool     "fsinfo")
+    (uploader "file list"))))
 
 (defun nodemcu-format-device ()
   "Format the NodeMCU device.
 
 This will delete all files, but not the NodeMCU firmware itself."
   (interactive)
-  (nodemcu--run-command (pcase nodemcu-backend
-                          ("nodemcu-tool"     "mkfs --noninteractive") ;; TODO argument not passed as real argument
-                          ("nodemcu-uploader" "file format"))))
+  (nodemcu--run-command
+   (nodemcu--backend-switch
+    (tool     "mkfs --noninteractive")
+    (uploader "file format"))))
 
 (defun nodemcu-reset-device ()
   "Reset the NodeMCU device using DTR/RTS."
