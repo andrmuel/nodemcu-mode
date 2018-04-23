@@ -101,11 +101,17 @@ Builds shell command for given COMMAND and ARGS."
       (message "command not supported")))
 
 (defmacro nodemcu--backend-switch (&rest cases)
+  "Wrapper for pcase to determine command for current nodemcu-backend."
   `(pcase nodemcu-backend
      ,@(mapcar
         (lambda (c)
           (list (concat "nodemcu-" (symbol-name (car c))) (cadr c)))
         cases)))
+
+(defmacro nodemcu--backend-run (&rest cases)
+  "Wrapper to run nodemcu command for current backend."
+  `(nodemcu--run-command
+    (nodemcu--backend-switch ,cases)))
 
 (defun nodemcu-upload-current-file ()
   "Upload the current file to the NodeMCU device."
@@ -133,41 +139,36 @@ Builds shell command for given COMMAND and ARGS."
 (defun nodemcu-list-devices ()
   "List available NodeMCU devices."
   (interactive)
-  (nodemcu--run-command
-   (nodemcu--backend-switch
-    (tool "devices"))))
+   (nodemcu--backend-run
+    (tool "devices")))
 
 (defun nodemcu-list-files ()
   "List files on device."
   (interactive)
-  (nodemcu--run-command
-   (nodemcu--backend-switch
-    (tool     "fsinfo")
-    (uploader "file list"))))
+  (nodemcu--backend-run
+   (tool     "fsinfo")
+   (uploader "file list")))
 
 (defun nodemcu-format-device ()
   "Format the NodeMCU device.
 
 This will delete all files, but not the NodeMCU firmware itself."
   (interactive)
-  (nodemcu--run-command
-   (nodemcu--backend-switch
-    (tool     "mkfs --noninteractive")
-    (uploader "file format"))))
+  (nodemcu--backend-run
+   (tool     "mkfs --noninteractive")
+   (uploader "file format")))
 
 (defun nodemcu-reset-device ()
   "Reset the NodeMCU device using DTR/RTS."
   (interactive)
-  (nodemcu--run-command
-   (nodemcu--backend-switch
-    (tool "reset"))))
+  (nodemcu--backend-run
+   (tool "reset")))
 
 (defun nodemcu-restart-device ()
   "Restart the NodeMCU device using 'node.restart()' command."
   (interactive)
-  (nodemcu--run-command
-   (nodemcu--backend-switch
-    (uploader "node restart"))))
+  (nodemcu--backend-run
+   (uploader "node restart")))
 
 (defun nodemcu-terminal ()
   "Start a serial terminal."
